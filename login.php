@@ -9,18 +9,18 @@ class signInUp extends database
     public function signInFunction()
     {
         if (isset($_POST['signIn'])) {
-            $email = $_POST['emailLogIn'];
-            $password = $_POST['passwordLogIn'];
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-            $sql = "select * from user_tbl where email = '$email' ";
+            $sql = "select * from student_tbl where username = '$username' ";
             $res = mysqli_query($this->link, $sql);
             if (mysqli_num_rows($res) > 0) {
                 $row = mysqli_fetch_assoc($res);
                 $pass = $row['password'];
 
-                if (password_verify($password, $pass) == true) {
-                    $_SESSION['email'] = $email;
-                    header('location:create.php');
+                if ($password == $pass) {
+                    $_SESSION['name'] = $username;
+                    header('location:profile.php');
                     return $res;
                 } else {
                     $msg = "Wrong password";
@@ -92,17 +92,17 @@ $objSignIn = $obj->signInFunction();
 
                             <?php } ?>
                         </div>
-                        <input type="email" name="emailLogIn" class="form-control p-4  border-0 bg-light"
-                            placeholder="Enter your email address" required>
-                        <input type="password" class="form-control mt-4 p-4 border-0 bg-light" name="passwordLogIn"
+                        <input type="text" name="username" class="form-control p-4  border-0 bg-light"
+                            placeholder="Enter your Username" required>
+                        <input type="password" class="form-control mt-4 p-4 border-0 bg-light" name="password"
                             placeholder="Enter your password" required>
 
 
                         <button type="submit" name="signIn"
                             class="btn btn-block font-weight-bold log_btn btn-lg mt-4">LOGIN</button>
-                        <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
+                        <!-- <small class="font-weight-bold mt-1 text-muted"><a href="forget_password.php"
                                 style="color: #05445E;">Forget
-                                Password</a></small>
+                                Password</a></small> -->
                         <!-- <hr>
                         <small class="font-weight-bold mt-1 text-muted">Don't have an account? <a href="register.php"
                                 style="color: #05445E;">Forget Password</a></small> -->

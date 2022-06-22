@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light bg_color">
         <div class="container">
             <a class="navbar-brand font-weight-bold" style="font-family: 'Lato', sans-serif; color: #481639"
-                href="index.php"><img src="images/leaf.jpg" alt=""></a>
+                href="index.php">Student Resume</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,19 +19,19 @@
                     <?php if (isset($_SESSION['email'])) { ?>
 
                     <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="create.php">Create User
+                        <a class="nav-link text-dark font-weight-bold" href="profile.php">Profile
                         </a>
                     </li>
-                    <li class="nav-item p-1">
+                    <!-- <li class="nav-item p-1">
                         <a class="nav-link text-dark font-weight-bold" href="result.php">Result
                         </a>
-                    </li>
+                    </li> -->
 
 
-                    <li class="nav-item p-1">
+                    <!-- <li class="nav-item p-1">
                         <a class="nav-link text-dark font-weight-bold" href="about_us.php">About Us
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item p-1">
                         <a class="nav-link text-dark font-weight-bold" href="logout.php">Logout
                         </a>
@@ -48,18 +48,11 @@
                         <a class="nav-link text-dark font-weight-bold" href="login.php">Login
                         </a>
                     </li>
-                    <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="register.php">Register
-                        </a>
-                    </li>
                     <!-- <li class="nav-item p-1">
                         <a class="nav-link text-dark font-weight-bold" href="register.php">Register
                         </a>
                     </li> -->
-                    <li class="nav-item p-1">
-                        <a class="nav-link text-dark font-weight-bold" href="about_us.php">About Us
-                        </a>
-                    </li>
+
 
                     <?php } ?>
 

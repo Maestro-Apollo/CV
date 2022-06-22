@@ -1,8 +1,7 @@
 <?php
 session_start();
-error_reporting(0);
 
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['name'])) {
 } else {
     header('location:login.php');
 }
@@ -12,74 +11,28 @@ class profile extends database
     protected $link;
     public function showProfile()
     {
-        $email = $_SESSION['email'];
-        $sql = "select * from user_tbl where email = '$email' ";
+        $username = $_SESSION['name'];
+        $sql = "select * from student_tbl where username = '$username' ";
         $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
-        }
-        # code...
-    }
 
-    //Show all the records inside user_info table
-    public function showProfileInfo()
-    {
-        $email = $_SESSION['email'];
-        $sql = "select * from user_info where email = '$email' ";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            return $res;
-        } else {
-            return false;
-        }
-        # code...
-    }
+        $row = mysqli_fetch_assoc($res);
+        $id = $row['student_id'];
 
-    public function expenseFunction()
-    {
-        $email = $_SESSION['email'];
-        $total = 0;
-        $sql = "SELECT expense_type, SUM(expense_amount) as amount FROM `expense_tbl` where email = '$email' AND MONTH(expense_date) = MONTH(CURRENT_DATE())
-        AND YEAR(expense_date) = YEAR(CURRENT_DATE())";
-        $res = mysqli_query($this->link, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            while ($row = mysqli_fetch_assoc($res)) {
-                $total += $row['amount'];
-            }
-        }
-        return $total;
-
-        # code...
-    }
-    public function showBudget()
-    {
-        $email = $_SESSION['email'];
-        $monthYear = date('F, Y');
-
-        $sqlFind = "SELECT * from budget_tbl where budget_month = '$monthYear' AND email = '$email' ";
+        $sqlFind = "SELECT * from info_tbl where student_id = '$id' ";
         $resFind = mysqli_query($this->link, $sqlFind);
+
         if (mysqli_num_rows($resFind) > 0) {
             return $resFind;
         } else {
-            return 0;
+            return false;
         }
         # code...
     }
 }
 $obj = new profile;
 $objShow = $obj->showProfile();
-$objShowInfo = $obj->showProfileInfo();
-// $objInsertInfo = $obj->insertProfileInfo();
 $row = mysqli_fetch_assoc($objShow);
-$rowInfo = mysqli_fetch_assoc($objShowInfo);
-$objBudget = $obj->showBudget();
-$objExpense = $obj->expenseFunction();
-if (is_object($objBudget) != 0) {
-    $rowBudget = mysqli_fetch_assoc($objBudget);
-    $progress = round(($objExpense / $rowBudget['budget']) * 100, 2);
-}
+
 
 
 ?>
@@ -132,7 +85,8 @@ if (is_object($objBudget) != 0) {
         font-family: 'Raleway', sans-serif;
     }
     </style>
-
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
@@ -146,7 +100,7 @@ if (is_object($objBudget) != 0) {
                 <div class="col-md-12">
                     <h3 class="float-left d-block font-weight-bold" style="color: #05445E"><span
                             class="text-secondary font-weight-light">Welcome |</span>
-                        <?php echo $row['fname'] ?>
+                        <?php echo $row['full_name'] ?>
                     </h3>
 
                     <div class="account bg-white mt-5 p-5 rounded">
@@ -158,20 +112,10 @@ if (is_object($objBudget) != 0) {
                                 <div class="col-md-7">
                                     <label for="fullname" class="font-weight-bold">Full Name</label>
                                     <input type="text" id="fullname" name="fullname"
-                                        value="<?php echo $row['fname']; ?> <?php echo $row['lname']; ?>"
-                                        class="form-control border-0 bg-light" readonly>
-                                    <label for="email" class="font-weight-bold mt-4">Email</label>
-                                    <input type="email" id="email" value="<?php echo $row['email']; ?>" name="email"
-                                        class="form-control border-0 bg-light" readonly>
-                                    <label for="phone" class="font-weight-bold mt-4">Phone Number</label>
-                                    <input type="text" id="phone" value="<?php echo $rowInfo['phone']; ?>" name="phone"
-                                        class="form-control border-0 bg-light">
-                                    <label for="country" class="font-weight-bold mt-4">Country</label>
-                                    <input type="text" id="country" value="<?php echo $rowInfo['country']; ?>"
-                                        name="country" class="form-control border-0 bg-light">
-                                    <label for="city" class="font-weight-bold mt-4">City</label>
-                                    <input type="text" id="city" value="<?php echo $rowInfo['city']; ?>" name="city"
-                                        class="form-control border-0 bg-light">
+                                        value="<?php echo $row['full_name']; ?>" class="form-control border-0 bg-light">
+
+                                    <label for="summary" class="font-weight-bold mt-4">Summary</label>
+                                    <div name="" id="editor" cols="30" rows="10"></div>
 
 
 
@@ -186,9 +130,9 @@ if (is_object($objBudget) != 0) {
                                     <p class="lead gap">Tap to upload image</p>
                                     <input class="btn font-weight-bold log_btn btn-lg mt-5" type="submit"
                                         value="Confirm Changes">
-                                </div>
+                                    </input>
 
-                            </div>
+                                </div>
 
                         </form>
                     </div>
@@ -224,6 +168,12 @@ if (is_object($objBudget) != 0) {
 
         });
     })
+    </script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+    var container = document.getElementById('editor');
+    var editor = new Quill(container);
     </script>
 </body>
 
