@@ -8,19 +8,20 @@ class profile extends database
 
     public function insertProfileInfo()
     {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $phone = $_POST['phone'];
-            $city = $_POST['city'];
-            $country = $_POST['country'];
+        if (isset($_POST['student_id'])) {
+            $student_id = $_POST['student_id'];
+            $full_name = $_POST['fullname'];
+            $skill = $_POST['skill'];
+            $qualification = $_POST['qualification'];
+            $summary = $_POST['summary'];
             $img = time() . '_' . $_FILES['image']['name'];
             $target = 'user_img/' . $img;
 
             if ($_FILES['image']['name'] == '') {
                 //Update query will update all the data inside user_info table
-                $sql = "UPDATE `user_info` SET `phone`= '$phone',`country`='$country',`city`='$city', `updated` = CURRENT_TIMESTAMP WHERE email = '$email'";
+                $sql = "UPDATE `info_tbl` SET `full_name`= '$full_name',`summary`='$summary',`skill`='$skill',`qualification`='$qualification', `date` = CURRENT_TIMESTAMP WHERE student_id = '$student_id'";
             } else {
-                $sql = "UPDATE `user_info` SET `phone`= '$phone',`country`='$country',`city`='$city', `image` = '$img', `updated` = CURRENT_TIMESTAMP WHERE email = '$email'";
+                $sql = "UPDATE `info_tbl` SET `full_name`= '$full_name',`summary`='$summary',`skill`='$skill',`image` = '$img',`qualification`='$qualification', `date` = CURRENT_TIMESTAMP WHERE student_id = '$student_id'";
             }
 
 

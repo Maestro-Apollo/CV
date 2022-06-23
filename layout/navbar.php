@@ -16,7 +16,7 @@
 
 
                     <!-- If the user is logged in and session is set then these nav option will show -->
-                    <?php if (isset($_SESSION['email'])) { ?>
+                    <?php if (isset($_SESSION['name'])) { ?>
 
                     <li class="nav-item p-1">
                         <a class="nav-link text-dark font-weight-bold" href="profile.php">Profile

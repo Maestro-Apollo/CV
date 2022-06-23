@@ -45,6 +45,8 @@ $row = mysqli_fetch_assoc($objShow);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php include('layout/style.php'); ?>
+    <link rel="stylesheet" href="./css/site.css">
+    <link rel="stylesheet" href="./css/richtext.min.css">
     <style>
     .profileImage {
         height: 200px;
@@ -85,8 +87,7 @@ $row = mysqli_fetch_assoc($objShow);
         font-family: 'Raleway', sans-serif;
     }
     </style>
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-light">
@@ -104,7 +105,6 @@ $row = mysqli_fetch_assoc($objShow);
                     </h3>
 
                     <div class="account bg-white mt-5 p-5 rounded">
-                        <div id="output"></div>
 
                         <h3 class="font-weight-bold mb-5" style="color: #05445E">Account Details</h3>
                         <form action="" id="myForm" enctype="multipart/form-data">
@@ -112,10 +112,12 @@ $row = mysqli_fetch_assoc($objShow);
                                 <div class="col-md-7">
                                     <label for="fullname" class="font-weight-bold">Full Name</label>
                                     <input type="text" id="fullname" name="fullname"
-                                        value="<?php echo $row['full_name']; ?>" class="form-control border-0 bg-light">
+                                        value="<?php echo $row['full_name']; ?>" class="form-control bg-light">
+                                    <input type="hidden" name="student_id" value="<?php echo $row['student_id']; ?>">
+                                    <label for="summary" class="font-weight-bold mt-4 mb-0">Summary</label>
+                                    <textarea class="content mt-0" name="summary"
+                                        maxlength="100"><?php echo $row['summary']; ?></textarea>
 
-                                    <label for="summary" class="font-weight-bold mt-4">Summary</label>
-                                    <div name="" id="editor" cols="30" rows="10"></div>
 
 
 
@@ -124,17 +126,34 @@ $row = mysqli_fetch_assoc($objShow);
                                 <div class="col-md-5 text-center">
 
                                     <img class="profileImage" onclick="triggerClick()" id="profileDisplay"
-                                        src="user_img/<?php echo $rowInfo['image']; ?>" alt="">
+                                        src="user_img/<?php echo $row['image']; ?>" alt="">
                                     <input type="file" accept="image/*" name="image" id="profileImage"
                                         onchange="displayImage(this)" style="display: none;">
                                     <p class="lead gap">Tap to upload image</p>
-                                    <input class="btn font-weight-bold log_btn btn-lg mt-5" type="submit"
+                                    <!-- <input class="btn font-weight-bold log_btn btn-lg mt-5" type="submit"
                                         value="Confirm Changes">
-                                    </input>
+                                    </input> -->
 
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="qualification" class="font-weight-bold mt-4 mb-0">Qualification</label>
+                                    <textarea class="content2 mt-0"
+                                        name="qualification"><?php echo $row['qualification']; ?></textarea>
 
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="Skill" class="font-weight-bold mt-4 mb-0">Skill</label>
+                                    <textarea class="content3 mt-0" name="skill"><?php echo $row['skill']; ?></textarea>
+                                </div>
+                            </div>
+                            <input class="btn font-weight-bold log_btn btn-lg mt-5 mb-3" type="submit"
+                                value="Confirm Changes">
+                            </input>
                         </form>
+                        <div id="output"></div>
+
                     </div>
 
                 </div>
@@ -169,11 +188,465 @@ $row = mysqli_fetch_assoc($objShow);
         });
     })
     </script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="./js/jquery.richtext.js"></script>
     <script>
-    var container = document.getElementById('editor');
-    var editor = new Quill(container);
+    $('.content').richText({
+
+        // text formatting
+        bold: true,
+        italic: true,
+        underline: true,
+
+        // text alignment
+        leftAlign: true,
+        centerAlign: true,
+        rightAlign: true,
+        justify: true,
+
+        // lists
+        ol: true,
+        ul: true,
+
+        // title
+        heading: true,
+
+        // fonts
+        fonts: true,
+        fontList: ["Arial",
+            "Arial Black",
+            "Comic Sans MS",
+            "Courier New",
+            "Geneva",
+            "Georgia",
+            "Helvetica",
+            "Impact",
+            "Lucida Console",
+            "Tahoma",
+            "Times New Roman",
+            "Verdana"
+        ],
+        fontColor: true,
+        fontSize: true,
+
+        // uploads
+        imageUpload: true,
+        fileUpload: true,
+
+        // media
+        // <a href = "https://www.jqueryscript.net/tags.php?/video/" > video < /a>Embed: true,
+
+        // link
+        urls: true,
+
+        // tables
+        table: true,
+
+        // code
+        removeStyles: true,
+        code: true,
+
+        // colors
+        colors: [],
+
+        // dropdowns
+        fileHTML: '',
+        imageHTML: '',
+
+        // translations
+        translations: {
+            'title': 'Title',
+            'white': 'White',
+            'black': 'Black',
+            'brown': 'Brown',
+            'beige': 'Beige',
+            'darkBlue': 'Dark Blue',
+            'blue': 'Blue',
+            'lightBlue': 'Light Blue',
+            'darkRed': 'Dark Red',
+            'red': 'Red',
+            'darkGreen': 'Dark Green',
+            'green': 'Green',
+            'purple': 'Purple',
+            'darkTurquois': 'Dark Turquois',
+            'turquois': 'Turquois',
+            'darkOrange': 'Dark Orange',
+            'orange': 'Orange',
+            'yellow': 'Yellow',
+            'imageURL': 'Image URL',
+            'fileURL': 'File URL',
+            'linkText': 'Link text',
+            'url': 'URL',
+            'size': 'Size',
+            'responsive': '<a href="https://www.jqueryscript.net/tags.php?/Responsive/">Responsive</a>',
+            'text': 'Text',
+            'openIn': 'Open in',
+            'sameTab': 'Same tab',
+            'newTab': 'New tab',
+            'align': 'Align',
+            'left': 'Left',
+            'justify': 'Justify',
+            'center': 'Center',
+            'right': 'Right',
+            'rows': 'Rows',
+            'columns': 'Columns',
+            'add': 'Add',
+            'pleaseEnterURL': 'Please enter an URL',
+            'videoURLnotSupported': 'Video URL not supported',
+            'pleaseSelectImage': 'Please select an image',
+            'pleaseSelectFile': 'Please select a file',
+            'bold': 'Bold',
+            'italic': 'Italic',
+            'underline': 'Underline',
+            'alignLeft': 'Align left',
+            'alignCenter': 'Align centered',
+            'alignRight': 'Align right',
+            'addOrderedList': 'Add ordered list',
+            'addUnorderedList': 'Add unordered list',
+            'addHeading': 'Add Heading/title',
+            'addFont': 'Add font',
+            'addFontColor': 'Add font color',
+            'addFontSize': 'Add font size',
+            'addImage': 'Add image',
+            'addVideo': 'Add video',
+            'addFile': 'Add file',
+            'addURL': 'Add URL',
+            'addTable': 'Add table',
+            'removeStyles': 'Remove styles',
+            'code': 'Show HTML code',
+            'undo': 'Undo',
+            'redo': 'Redo',
+            'close': 'Close'
+        },
+
+        // privacy
+        youtubeCookies: false,
+
+        // preview
+        preview: false,
+
+        // placeholder
+        placeholder: '',
+
+        // dev settings
+        useSingleQuotes: false,
+        height: 0,
+        heightPercentage: 0,
+        id: "",
+        class: "",
+        useParagraph: false,
+        maxlength: 0,
+        useTabForNext: false,
+
+        // callback function after init
+        callback: undefined,
+
+    });
+    </script>
+    <script>
+    $('.content2').richText({
+
+        // text formatting
+        bold: true,
+        italic: true,
+        underline: true,
+
+        // text alignment
+        leftAlign: true,
+        centerAlign: true,
+        rightAlign: true,
+        justify: true,
+
+        // lists
+        ol: true,
+        ul: true,
+
+        // title
+        heading: true,
+
+        // fonts
+        fonts: true,
+        fontList: ["Arial",
+            "Arial Black",
+            "Comic Sans MS",
+            "Courier New",
+            "Geneva",
+            "Georgia",
+            "Helvetica",
+            "Impact",
+            "Lucida Console",
+            "Tahoma",
+            "Times New Roman",
+            "Verdana"
+        ],
+        fontColor: true,
+        fontSize: true,
+
+        // uploads
+        imageUpload: true,
+        fileUpload: true,
+
+        // media
+        // <a href = "https://www.jqueryscript.net/tags.php?/video/" > video < /a>Embed: true,
+
+        // link
+        urls: true,
+
+        // tables
+        table: true,
+
+        // code
+        removeStyles: true,
+        code: true,
+
+        // colors
+        colors: [],
+
+        // dropdowns
+        fileHTML: '',
+        imageHTML: '',
+
+        // translations
+        translations: {
+            'title': 'Title',
+            'white': 'White',
+            'black': 'Black',
+            'brown': 'Brown',
+            'beige': 'Beige',
+            'darkBlue': 'Dark Blue',
+            'blue': 'Blue',
+            'lightBlue': 'Light Blue',
+            'darkRed': 'Dark Red',
+            'red': 'Red',
+            'darkGreen': 'Dark Green',
+            'green': 'Green',
+            'purple': 'Purple',
+            'darkTurquois': 'Dark Turquois',
+            'turquois': 'Turquois',
+            'darkOrange': 'Dark Orange',
+            'orange': 'Orange',
+            'yellow': 'Yellow',
+            'imageURL': 'Image URL',
+            'fileURL': 'File URL',
+            'linkText': 'Link text',
+            'url': 'URL',
+            'size': 'Size',
+            'responsive': '<a href="https://www.jqueryscript.net/tags.php?/Responsive/">Responsive</a>',
+            'text': 'Text',
+            'openIn': 'Open in',
+            'sameTab': 'Same tab',
+            'newTab': 'New tab',
+            'align': 'Align',
+            'left': 'Left',
+            'justify': 'Justify',
+            'center': 'Center',
+            'right': 'Right',
+            'rows': 'Rows',
+            'columns': 'Columns',
+            'add': 'Add',
+            'pleaseEnterURL': 'Please enter an URL',
+            'videoURLnotSupported': 'Video URL not supported',
+            'pleaseSelectImage': 'Please select an image',
+            'pleaseSelectFile': 'Please select a file',
+            'bold': 'Bold',
+            'italic': 'Italic',
+            'underline': 'Underline',
+            'alignLeft': 'Align left',
+            'alignCenter': 'Align centered',
+            'alignRight': 'Align right',
+            'addOrderedList': 'Add ordered list',
+            'addUnorderedList': 'Add unordered list',
+            'addHeading': 'Add Heading/title',
+            'addFont': 'Add font',
+            'addFontColor': 'Add font color',
+            'addFontSize': 'Add font size',
+            'addImage': 'Add image',
+            'addVideo': 'Add video',
+            'addFile': 'Add file',
+            'addURL': 'Add URL',
+            'addTable': 'Add table',
+            'removeStyles': 'Remove styles',
+            'code': 'Show HTML code',
+            'undo': 'Undo',
+            'redo': 'Redo',
+            'close': 'Close'
+        },
+
+        // privacy
+        youtubeCookies: false,
+
+        // preview
+        preview: false,
+
+        // placeholder
+        placeholder: '',
+
+        // dev settings
+        useSingleQuotes: false,
+        height: 0,
+        heightPercentage: 0,
+        id: "",
+        class: "",
+        useParagraph: false,
+        maxlength: 0,
+        useTabForNext: false,
+
+        // callback function after init
+        callback: undefined,
+
+    });
+    </script>
+    <script>
+    $('.content3').richText({
+
+        // text formatting
+        bold: true,
+        italic: true,
+        underline: true,
+
+        // text alignment
+        leftAlign: true,
+        centerAlign: true,
+        rightAlign: true,
+        justify: true,
+
+        // lists
+        ol: true,
+        ul: true,
+
+        // title
+        heading: true,
+
+        // fonts
+        fonts: true,
+        fontList: ["Arial",
+            "Arial Black",
+            "Comic Sans MS",
+            "Courier New",
+            "Geneva",
+            "Georgia",
+            "Helvetica",
+            "Impact",
+            "Lucida Console",
+            "Tahoma",
+            "Times New Roman",
+            "Verdana"
+        ],
+        fontColor: true,
+        fontSize: true,
+
+        // uploads
+        imageUpload: true,
+        fileUpload: true,
+
+        // media
+        // <a href = "https://www.jqueryscript.net/tags.php?/video/" > video < /a>Embed: true,
+
+        // link
+        urls: true,
+
+        // tables
+        table: true,
+
+        // code
+        removeStyles: true,
+        code: true,
+
+        // colors
+        colors: [],
+
+        // dropdowns
+        fileHTML: '',
+        imageHTML: '',
+
+        // translations
+        translations: {
+            'title': 'Title',
+            'white': 'White',
+            'black': 'Black',
+            'brown': 'Brown',
+            'beige': 'Beige',
+            'darkBlue': 'Dark Blue',
+            'blue': 'Blue',
+            'lightBlue': 'Light Blue',
+            'darkRed': 'Dark Red',
+            'red': 'Red',
+            'darkGreen': 'Dark Green',
+            'green': 'Green',
+            'purple': 'Purple',
+            'darkTurquois': 'Dark Turquois',
+            'turquois': 'Turquois',
+            'darkOrange': 'Dark Orange',
+            'orange': 'Orange',
+            'yellow': 'Yellow',
+            'imageURL': 'Image URL',
+            'fileURL': 'File URL',
+            'linkText': 'Link text',
+            'url': 'URL',
+            'size': 'Size',
+            'responsive': '<a href="https://www.jqueryscript.net/tags.php?/Responsive/">Responsive</a>',
+            'text': 'Text',
+            'openIn': 'Open in',
+            'sameTab': 'Same tab',
+            'newTab': 'New tab',
+            'align': 'Align',
+            'left': 'Left',
+            'justify': 'Justify',
+            'center': 'Center',
+            'right': 'Right',
+            'rows': 'Rows',
+            'columns': 'Columns',
+            'add': 'Add',
+            'pleaseEnterURL': 'Please enter an URL',
+            'videoURLnotSupported': 'Video URL not supported',
+            'pleaseSelectImage': 'Please select an image',
+            'pleaseSelectFile': 'Please select a file',
+            'bold': 'Bold',
+            'italic': 'Italic',
+            'underline': 'Underline',
+            'alignLeft': 'Align left',
+            'alignCenter': 'Align centered',
+            'alignRight': 'Align right',
+            'addOrderedList': 'Add ordered list',
+            'addUnorderedList': 'Add unordered list',
+            'addHeading': 'Add Heading/title',
+            'addFont': 'Add font',
+            'addFontColor': 'Add font color',
+            'addFontSize': 'Add font size',
+            'addImage': 'Add image',
+            'addVideo': 'Add video',
+            'addFile': 'Add file',
+            'addURL': 'Add URL',
+            'addTable': 'Add table',
+            'removeStyles': 'Remove styles',
+            'code': 'Show HTML code',
+            'undo': 'Undo',
+            'redo': 'Redo',
+            'close': 'Close'
+        },
+
+        // privacy
+        youtubeCookies: false,
+
+        // preview
+        preview: false,
+
+        // placeholder
+        placeholder: '',
+
+        // dev settings
+        useSingleQuotes: false,
+        height: 0,
+        heightPercentage: 0,
+        id: "",
+        class: "",
+        useParagraph: false,
+        maxlength: 0,
+        useTabForNext: false,
+
+        // callback function after init
+        callback: undefined,
+
+    });
     </script>
 </body>
 
